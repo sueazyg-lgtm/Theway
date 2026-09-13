@@ -1,0 +1,29 @@
+:root {
+  /* Primitive */
+  --ivory-0: #fffdf8;
+  --ivory-100: #f7f3e8;
+  --ivory-200: #eee7d8;
+  --moss-100: #e8eee2;
+  --moss-300: #b7c6aa;
+  --moss-600: #5f775d;
+  --moss-700: #465d47;
+  --sunset-400: #f3bd67;
+  --sunset-500: #e9a24e;
+  --sunset-600: #d98738;
+  --ink-900: #283129;
+  --earth-600: #696d63;
+
+  /* Semantic */
+  --color-background-grouped: var(--ivory-100);
+  --color-surface: var(--ivory-0);
+  --color-foreground: var(--ink-900);
+  --color-muted: var(--earth-600);
+  --color-primary: var(--moss-600);
+  --color-accent: var(--sunset-500);
+  --material-tabbar: rgb(255 253 248 / 96%);
+
+  /* Component */
+  --control-height: 44px;
+  --card-radius: 15px;
+  --button-radius: 14px;
+}

@@ -1,0 +1,36 @@
+<view class="screen">
+  <view class="back" bindtap="backToTrips"><image class="back-icon" src="/assets/icons/chevron-left.svg" mode="aspectFit" aria-hidden="true" />全部行程</view>
+  <view wx:if="{{error}}" class="error">{{error}}</view>
+  <block wx:if="{{selected}}">
+    <view class="page-header">
+      <view class="heading">方案调整</view>
+      <view class="subheading">天气和心情会变，保留备选，也保留每一次调整的来路。</view>
+    </view>
+
+    <view class="card">
+      <view class="title">备选方案备注</view>
+      <textarea placeholder="例如：下雨时改逛博物馆" value="{{alternativeNote}}" data-field="alternativeNote" bindinput="field"></textarea>
+      <button class="primary" bindtap="saveAlternative">保存备选备注</button>
+    </view>
+
+    <view class="section">活动启用状态</view>
+    <view class="muted">放弃活动不会删除历史记录，也不会回滚已确认费用。</view>
+    <view class="day" wx:for="{{selected.days}}" wx:key="id" wx:for-item="day">
+      <view class="day-date">{{day.date}}</view>
+      <view class="card" wx:for="{{day.activities}}" wx:key="id">
+        <view class="title">{{item.name}}</view>
+        <view class="muted">{{item.statusLabel}}</view>
+        <button data-id="{{item.id}}" data-status="{{item.status}}" bindtap="toggleActivity">{{item.status === 'cancelled' ? '重新启用' : '放弃活动'}}</button>
+      </view>
+      <view wx:if="{{!day.activities.length}}" class="card empty"><view class="muted">当天暂无活动。</view></view>
+    </view>
+
+    <view class="section" wx:if="{{selected.conflicts.length}}">来源冲突与待核实</view>
+    <view class="card" wx:for="{{selected.conflicts}}" wx:key="id">
+      <view class="title">{{item.code}} · {{item.title}}</view>
+      <view class="muted">采用值：{{item.adoptedValue || '尚未采用'}}</view>
+      <view class="muted">状态：{{item.status}} · 用户确认：{{item.userConfirmed ? '是' : '否'}}</view>
+    </view>
+  </block>
+</view>
+<trip-tabbar wx:if="{{selected}}" trip-id="{{tripId}}" active="adjustments" />

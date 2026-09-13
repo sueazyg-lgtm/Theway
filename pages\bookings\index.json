@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "预订与待办",
+  "usingComponents": {
+    "trip-tabbar": "../../components/trip-tabbar/index"
+  }
+}

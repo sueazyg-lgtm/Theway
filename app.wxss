@@ -1,0 +1,9 @@
+@import './styles/tokens.wxss';
+
+page {
+  background: var(--color-background-grouped);
+  color: var(--color-foreground);
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.container { box-sizing: border-box; min-height: 100%; }

@@ -1,0 +1,19 @@
+{
+  "name": "travel-planner",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.runtime.json",
+    "validate": "node scripts/validate-project.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit -p tsconfig.check.json"
+  },
+  "devDependencies": {
+    "@types/node": "24.13.3",
+    "miniprogram-api-typings": "5.2.3",
+    "typescript": "7.0.2",
+    "vitest": "5.0.0"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/overview/index",
+    "pages/itinerary/index",
+    "pages/budget/index",
+    "pages/bookings/index",
+    "pages/adjustments/index",
+    "pages/share/index"
+  ],
+  "window": {
+    "backgroundColor": "#F7F3E8",
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#F7F3E8",
+    "navigationBarTextStyle": "black",
+    "navigationStyle": "default",
+    "navigationBarTitleText": "这趟"
+  },
+  "style": "v2",
+  "renderer": "webview",
+  "componentFramework": "glass-easel",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

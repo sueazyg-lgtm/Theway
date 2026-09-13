@@ -1,0 +1,13 @@
+@import '../../styles/workspace.wxss';
+
+.screen { padding-bottom: calc(52rpx + env(safe-area-inset-bottom)); }
+.trip-summary { margin-top: 4rpx; }
+.loading-state { display: flex; align-items: center; gap: 18rpx; }
+.loading-mark {
+  width: 18rpx;
+  height: 18rpx;
+  border: 4rpx solid var(--color-separator);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+}
+.activity-row { min-height: 88rpx; display: flex; align-items: center; padding-top: 0; padding-bottom: 0; }

@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "方案调整",
+  "usingComponents": {
+    "trip-tabbar": "../../components/trip-tabbar/index"
+  }
+}

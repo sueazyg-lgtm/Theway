@@ -1,0 +1,111 @@
+<view class="screen home-screen">
+  <view wx:if="{{!creating}}" class="home-header">
+    <view class="header-copy">
+      <view class="heading">这趟</view>
+      <view class="subheading">把沿途的风景和花费，都轻松记下来。</view>
+    </view>
+    <view class="header-action" bindtap="startCreate" role="button" aria-label="创建行程">新建</view>
+  </view>
+  <view wx:else class="home-header">
+    <view class="header-copy">
+      <view class="heading">新建行程</view>
+      <view class="subheading">先确定日期和同行人，其他内容可以稍后补充。</view>
+    </view>
+    <view class="header-action" bindtap="cancelCreate" role="button" aria-label="取消创建">取消</view>
+  </view>
+
+  <view wx:if="{{!creating}}" class="nature-hero">
+    <image class="hero-art" src="/assets/illustrations/nature-hero.svg" mode="aspectFill" aria-label="湖泊、群山与松树插画" />
+    <view class="hero-body">
+      <view class="hero-kicker">向自然出发</view>
+      <view class="hero-title">下一段好时光，慢慢计划</view>
+      <view class="hero-description">路线、预算和同行人的共同清单，集中放在一处。</view>
+      <view class="hero-action" bindtap="startCreate" role="button">开始规划</view>
+    </view>
+  </view>
+
+  <view wx:if="{{!creating}}" class="local-mode">
+    <view class="mode-indicator"></view>
+    <view class="mode-copy">
+      <view class="mode-title">保存在本机</view>
+      <view class="mode-detail">云同步与真实分享尚未接通</view>
+    </view>
+  </view>
+  <view wx:if="{{error}}" class="error">{{error}}</view>
+
+  <block wx:if="{{!creating}}">
+    <view class="section">我的行程</view>
+    <view wx:if="{{!trips.length}}" class="empty-state">
+      <view class="empty-title">还没有行程</view>
+      <view class="muted">新建一趟旅行，再按天补充路线、预算和预订。</view>
+      <button class="primary empty-action" bindtap="startCreate">创建第一趟行程</button>
+    </view>
+
+    <view wx:if="{{trips.length}}" class="trip-list">
+      <view
+        wx:for="{{trips}}"
+        wx:key="id"
+        class="trip-row"
+        data-id="{{item.id}}"
+        bindtap="open"
+        role="button"
+        aria-label="查看{{item.title}}"
+      >
+        <image class="trip-marker" src="/assets/illustrations/trip-marker.svg" mode="aspectFit" aria-hidden="true" />
+        <view class="trip-copy">
+          <view class="trip-title">{{item.title}}</view>
+          <view class="trip-meta">{{item.start}} — {{item.end}}</view>
+          <view class="trip-meta">{{item.count}} 人同行</view>
+        </view>
+        <view class="trip-trailing">
+          <button class="archive-button" size="mini" data-id="{{item.id}}" data-revision="{{item.revision}}" catchtap="archive">归档</button>
+          <image class="row-chevron" src="/assets/icons/chevron-right.svg" mode="aspectFit" aria-hidden="true" />
+        </view>
+      </view>
+    </view>
+
+    <view class="case-entry">
+      <view class="case-link" bindtap="importXinjiang" role="button">导入新疆案例</view>
+      <view class="case-note">保留来源冲突和待核实项；已购买、已预订不会被计为实付。</view>
+    </view>
+
+    <block wx:if="{{archivedTrips.length}}">
+      <view class="section">已归档</view>
+      <view class="trip-list archived-list">
+        <view class="trip-row" wx:for="{{archivedTrips}}" wx:key="id">
+          <image class="trip-marker" src="/assets/illustrations/trip-marker.svg" mode="aspectFit" aria-hidden="true" />
+          <view class="trip-copy">
+            <view class="trip-title">{{item.title}}</view>
+            <view class="trip-meta">{{item.start}} — {{item.end}}</view>
+            <view class="trip-meta">数据仍完整保留</view>
+          </view>
+          <button class="restore-button" size="mini" data-id="{{item.id}}" data-revision="{{item.revision}}" catchtap="restore">恢复</button>
+        </view>
+      </view>
+    </block>
+  </block>
+
+  <view wx:if="{{creating}}" class="form-sheet">
+    <view class="form-field">
+      <text class="form-label">行程名称</text>
+      <input placeholder="例如：秋日海边周末" value="{{title}}" data-field="title" bindinput="field" />
+    </view>
+    <view class="form-field">
+      <text class="form-label">出发日期</text>
+      <picker mode="date" value="{{startDate}}" data-field="startDate" bindchange="field">
+        <view class="input">{{startDate || '选择出发日期'}}</view>
+      </picker>
+    </view>
+    <view class="form-field">
+      <text class="form-label">返程日期</text>
+      <picker mode="date" value="{{endDate}}" data-field="endDate" bindchange="field">
+        <view class="input">{{endDate || '选择返程日期'}}</view>
+      </picker>
+    </view>
+    <view class="form-field">
+      <text class="form-label">同行人</text>
+      <input placeholder="用逗号分隔，例如：小林，小周" value="{{names}}" data-field="names" bindinput="field" />
+    </view>
+    <button class="primary submit-button" bindtap="create">保存并进入行程</button>
+  </view>
+</view>

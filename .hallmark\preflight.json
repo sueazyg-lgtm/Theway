@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "recordedAt": "2026-09-11",
+  "project": "这趟",
+  "target": "native-wechat-miniprogram",
+  "flow": "multi-page-redesign",
+  "genre": "natural-outdoor",
+  "macrostructure": "mobile-travel-journal",
+  "theme": "warm-ivory-moss-sunset",
+  "approved": true,
+  "constraints": [
+    "preserve-routes-and-business-logic",
+    "no-emoji",
+    "local-svg-vectors-only",
+    "flat-nature-illustration",
+    "no-remote-fonts",
+    "no-new-ui-library"
+  ],
+  "existingDesign": {
+    "runtimeTokens": "styles/tokens.wxss",
+    "sharedStyles": "styles/workspace.wxss",
+    "sharedNavigation": "components/trip-tabbar"
+  }
+}

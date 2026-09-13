@@ -1,0 +1,43 @@
+<view class="screen">
+  <view class="back" bindtap="backToTrips"><image class="back-icon" src="/assets/icons/chevron-left.svg" mode="aspectFit" aria-hidden="true" />全部行程</view>
+  <view wx:if="{{error}}" class="error">{{error}}</view>
+  <block wx:if="{{selected}}">
+    <view class="page-header">
+      <view class="heading">预订与待办</view>
+      <view class="subheading">把想住的地方和想去的景点收好，购买与预约分别记录。</view>
+    </view>
+
+    <view class="metrics">
+      <view class="metric"><view class="metric-value">{{selected.overview.bookings.total}}</view><view class="muted">全部事项</view></view>
+      <view class="metric"><view class="metric-value">{{selected.overview.bookings.purchased}}</view><view class="muted">已购买</view></view>
+      <view class="metric"><view class="metric-value">{{selected.overview.bookings.reserved}}</view><view class="muted">已预约</view></view>
+    </view>
+
+    <view class="section">新增事项</view>
+    <view class="card">
+      <text>酒店或门票名称</text>
+      <input placeholder="例如：湖畔民宿" value="{{bookingName}}" data-field="bookingName" bindinput="field" />
+      <text>使用日期</text>
+      <picker mode="date" value="{{bookingDate}}" start="{{selected.startDate}}" end="{{selected.endDate}}" data-field="bookingDate" bindchange="field"><view class="input">{{bookingDate}}</view></picker>
+      <text>总价（元，可留空）</text>
+      <input type="digit" placeholder="0.00" value="{{bookingAmount}}" data-field="bookingAmount" bindinput="field" />
+      <button class="primary" bindtap="addBooking">保存预订事项</button>
+    </view>
+
+    <view class="section">全部预订</view>
+    <view class="card" wx:for="{{selected.bookings}}" wx:key="id">
+      <view class="title">{{item.name}} · {{item.useDate}}</view>
+      <view>
+        <text class="status">购买：{{item.purchaseLabel}}</text>
+        <text class="status">预约：{{item.reservationLabel}}</text>
+      </view>
+      <view class="muted">记录金额：{{item.amount}}</view>
+      <view class="row">
+        <button size="mini" wx:if="{{item.purchaseStatus !== 'purchased'}}" data-id="{{item.id}}" bindtap="markPurchased">确认已购买</button>
+        <button size="mini" wx:if="{{item.reservationStatus !== 'reserved'}}" data-id="{{item.id}}" bindtap="markReserved">确认已预约</button>
+      </view>
+    </view>
+    <view wx:if="{{!selected.bookings.length}}" class="card empty"><view class="muted">尚未添加酒店、门票或预约事项。</view></view>
+  </block>
+</view>
+<trip-tabbar wx:if="{{selected}}" trip-id="{{tripId}}" active="bookings" />

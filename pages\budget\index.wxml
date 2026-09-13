@@ -1,0 +1,94 @@
+<view class="screen">
+  <view class="back" bindtap="backToTrips"><image class="back-icon" src="/assets/icons/chevron-left.svg" mode="aspectFit" aria-hidden="true" />全部行程</view>
+  <view wx:if="{{error}}" class="error">{{error}}</view>
+  <block wx:if="{{selected}}">
+    <view class="page-header">
+      <view class="heading">预算与账本</view>
+      <view class="subheading">先计划，再记录真实花费；只有确认实付才会参与结算。</view>
+    </view>
+
+    <view class="metrics">
+      <view class="metric"><view class="metric-value">¥{{selected.overview.budgetLow}}</view><view class="muted">预算低值</view></view>
+      <view class="metric"><view class="metric-value">¥{{selected.actual}}</view><view class="muted">已确认实付</view></view>
+      <view class="metric"><view class="metric-value">¥{{selected.pending}}</view><view class="muted">待确认费用</view></view>
+    </view>
+
+    <view class="section">新增分类预算</view>
+    <view class="card">
+      <text>分类</text>
+      <picker range="{{budgetCategories}}" value="{{budgetCategoryIndex}}" data-field="budgetCategoryIndex" bindchange="field"><view class="input">{{budgetCategories[budgetCategoryIndex]}}</view></picker>
+      <text>项目名称</text>
+      <input placeholder="例如：租车" value="{{budgetName}}" data-field="budgetName" bindinput="field" />
+      <text>预算金额（元）</text>
+      <input type="digit" placeholder="0.00" value="{{budgetAmount}}" data-field="budgetAmount" bindinput="field" />
+      <text>分摊方式</text>
+      <picker range="{{budgetModes}}" value="{{budgetModeIndex}}" data-field="budgetModeIndex" bindchange="field"><view class="input">{{budgetModes[budgetModeIndex]}}</view></picker>
+      <checkbox-group bindchange="budgetPeople">
+        <label class="person" wx:for="{{budgetParticipants}}" wx:key="id"><checkbox value="{{item.id}}" checked="{{item.checked}}" />{{item.displayName}}</label>
+      </checkbox-group>
+      <view class="muted">公共均分自动包含全部同行人；按房间或指定承担使用勾选人员，分摊尾差精确到分。</view>
+      <button class="primary" bindtap="addBudget">保存预算</button>
+    </view>
+
+    <view class="card" wx:for="{{selected.budgetItems}}" wx:key="id">
+      <view class="title">{{item.category}} · {{item.name}}</view>
+      <view class="muted">¥ {{item.amount}} · {{item.modeLabel}}</view>
+    </view>
+    <view wx:if="{{!selected.budgetItems.length}}" class="card empty"><view class="muted">尚未录入预算。</view></view>
+
+    <view class="section">实际账本</view>
+    <view class="card">
+      <text>付款人</text>
+      <picker range="{{selected.participantNames}}" value="{{payerIndex}}" data-field="payerIndex" bindchange="field"><view class="input">{{selected.participantNames[payerIndex]}}</view></picker>
+      <text>费用金额（元）</text>
+      <input type="digit" placeholder="0.00" value="{{expenseAmount}}" data-field="expenseAmount" bindinput="field" />
+      <text>本笔费用分摊人员</text>
+      <checkbox-group bindchange="expensePeople">
+        <label class="person" wx:for="{{expenseParticipants}}" wx:key="id"><checkbox value="{{item.id}}" checked="{{item.checked}}" />{{item.displayName}}</label>
+      </checkbox-group>
+      <view class="muted">仅在勾选人员之间均分，尾差精确到分；保存后仍是“待确认”。</view>
+      <button class="primary" bindtap="addExpense">保存待确认费用</button>
+    </view>
+    <view class="card" wx:for="{{selected.expenses}}" wx:key="id">
+      <view class="title">¥ {{item.amount}} · {{item.label}}</view>
+      <button wx:if="{{item.status === 'pending'}}" data-id="{{item.id}}" bindtap="confirm">确认已实付</button>
+    </view>
+    <view wx:if="{{!selected.expenses.length}}" class="card empty"><view class="muted">尚无实际费用记录。</view></view>
+
+    <view class="section">退款</view>
+    <view wx:if="{{selected.refundableExpenses.length}}" class="card">
+      <text>关联已确认费用</text>
+      <picker range="{{selected.refundableExpenses}}" range-key="label" value="{{refundExpenseIndex}}" data-field="refundExpenseIndex" bindchange="field"><view class="input">{{selected.refundableExpenses[refundExpenseIndex].label}} · 剩余可退 ¥{{selected.refundableExpenses[refundExpenseIndex].remainingRefundable}}</view></picker>
+      <text>退款接收人</text>
+      <picker range="{{selected.participantNames}}" value="{{refundReceiverIndex}}" data-field="refundReceiverIndex" bindchange="field"><view class="input">{{selected.participantNames[refundReceiverIndex]}}</view></picker>
+      <text>退款金额（元）</text>
+      <input type="digit" placeholder="0.00" value="{{refundAmount}}" data-field="refundAmount" bindinput="field" />
+      <view class="muted">退款按原费用分摊比例反向分配，保存后仍需确认到账。</view>
+      <button class="primary" bindtap="submitRefund">保存待确认退款</button>
+    </view>
+    <view wx:if="{{!selected.refundableExpenses.length}}" class="card empty"><view class="muted">没有可退款的已确认费用。</view></view>
+    <view class="card" wx:for="{{selected.refunds}}" wx:key="id">
+      <view class="title">¥ {{item.amount}} · {{item.label}}</view>
+      <view class="muted">接收人：{{item.receiverName}}</view>
+      <button wx:if="{{item.status === 'pending'}}" data-id="{{item.id}}" bindtap="confirmRefund">确认退款到账</button>
+    </view>
+
+    <view class="section">结算建议</view>
+    <view class="card" wx:for="{{selected.suggestions}}" wx:key="id">
+      <view class="title">{{item.from}} 转给 {{item.to}} · ¥ {{item.amount}}</view>
+      <view class="muted">仅为建议，尚未计入实际转账。</view>
+      <button wx:if="{{!item.reported}}" data-from="{{item.fromParticipantId}}" data-to="{{item.toParticipantId}}" data-amount="{{item.amountFen}}" bindtap="reportTransfer">登记已线下转账</button>
+      <view wx:else class="muted">已登记为待确认，请在下方核对。</view>
+    </view>
+    <view wx:if="{{!selected.suggestions.length}}" class="card empty"><view class="muted">目前无待结算金额。</view></view>
+
+    <view class="section">转账记录</view>
+    <view class="card" wx:for="{{selected.transfers}}" wx:key="id">
+      <view class="title">{{item.fromName}} 转给 {{item.toName}} · ¥ {{item.amount}}</view>
+      <view class="muted">{{item.label}}</view>
+      <button wx:if="{{item.status === 'reported'}}" data-id="{{item.id}}" bindtap="confirmTransfer">确认转账已完成</button>
+    </view>
+    <view wx:if="{{!selected.transfers.length}}" class="card empty"><view class="muted">尚无线下转账记录。</view></view>
+  </block>
+</view>
+<trip-tabbar wx:if="{{selected}}" trip-id="{{tripId}}" active="budget" />

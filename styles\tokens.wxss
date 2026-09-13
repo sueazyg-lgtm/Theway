@@ -1,0 +1,63 @@
+page {
+  /* Primitive tokens */
+  --ivory-0: #fffdf8;
+  --ivory-100: #f7f3e8;
+  --ivory-200: #eee7d8;
+  --ivory-300: #e2d8c5;
+  --moss-100: #e8eee2;
+  --moss-300: #b7c6aa;
+  --moss-500: #758b70;
+  --moss-600: #5f775d;
+  --moss-700: #465d47;
+  --sunset-100: #fff0d6;
+  --sunset-400: #f3bd67;
+  --sunset-500: #e9a24e;
+  --sunset-600: #d98738;
+  --ink-900: #283129;
+  --earth-600: #696d63;
+  --earth-400: #939589;
+  --danger-100: #fbe8e2;
+  --danger-600: #b95643;
+  --space-1: 8rpx;
+  --space-2: 16rpx;
+  --space-3: 24rpx;
+  --space-4: 32rpx;
+  --space-5: 40rpx;
+  --space-6: 48rpx;
+  --radius-sm: 14rpx;
+  --radius-md: 22rpx;
+  --radius-lg: 30rpx;
+  --radius-xl: 40rpx;
+  --font-size-caption: 23rpx;
+  --font-size-body: 28rpx;
+  --font-size-title: 44rpx;
+
+  /* Semantic tokens */
+  --color-background: var(--ivory-0);
+  --color-background-grouped: var(--ivory-100);
+  --color-surface: rgba(255, 253, 248, .96);
+  --color-surface-secondary: #f3eee3;
+  --color-foreground: var(--ink-900);
+  --color-muted: var(--earth-600);
+  --color-tertiary: var(--earth-400);
+  --color-separator: rgba(121, 119, 103, .14);
+  --color-primary: var(--moss-600);
+  --color-primary-active: var(--moss-700);
+  --color-accent: var(--sunset-500);
+  --color-warning-bg: var(--sunset-100);
+  --color-warning-fg: #8a5a1f;
+  --color-error-bg: var(--danger-100);
+  --color-error-fg: var(--danger-600);
+  --material-tabbar: rgba(255, 253, 248, .96);
+
+  /* Component tokens */
+  --card-bg: var(--color-surface);
+  --card-border: var(--color-separator);
+  --card-radius: var(--radius-lg);
+  --card-padding: var(--space-4);
+  --button-bg: var(--sunset-500);
+  --button-bg-active: var(--sunset-600);
+  --button-fg: #fffdf8;
+  --button-radius: 28rpx;
+  --control-height: 92rpx;
+}

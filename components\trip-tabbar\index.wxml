@@ -1,0 +1,19 @@
+<view class="tabbar-shell">
+  <view class="tabbar" role="tablist" aria-label="旅行功能导航">
+    <view
+      wx:for="{{entries}}"
+      wx:key="key"
+      class="tab {{active === item.key ? 'active' : ''}} {{item.key === 'budget' ? 'tab-primary' : ''}}"
+      data-page="{{item.key}}"
+      bindtap="go"
+      role="tab"
+      aria-label="{{item.label}}"
+      aria-selected="{{active === item.key}}"
+    >
+      <view class="tab-icon-shell">
+        <image class="tab-icon" src="{{item.key === 'budget' ? item.activeIcon : (active === item.key ? item.activeIcon : item.icon)}}" mode="aspectFit" aria-hidden="true" />
+      </view>
+      <text class="tab-label">{{item.label}}</text>
+    </view>
+  </view>
+</view>

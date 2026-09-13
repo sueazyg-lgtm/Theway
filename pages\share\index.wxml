@@ -1,0 +1,27 @@
+<view class="screen">
+  <view class="page-header">
+    <view class="heading">同行人行程</view>
+    <view class="subheading">只读内容不包含私人账本和结算信息。</view>
+  </view>
+
+  <view wx:if="{{loading}}" class="card loading-state">
+    <view class="loading-mark"></view>
+    <view class="muted">正在读取行程</view>
+  </view>
+  <view wx:if="{{error}}" class="error">{{error}}</view>
+
+  <block wx:if="{{view}}">
+    <view class="card trip-summary">
+      <view class="title">{{view.title}}</view>
+      <view class="muted">{{view.startDate}} 至 {{view.endDate}} · {{view.participantCount}} 人</view>
+      <view class="privacy">{{view.notice}}</view>
+    </view>
+
+    <view class="section">每日安排</view>
+    <view class="day" wx:for="{{view.days}}" wx:key="date">
+      <view class="day-date">{{item.date}}</view>
+      <view class="card activity-row" wx:for="{{item.activities}}" wx:key="name">{{item.name}}</view>
+      <view wx:if="{{!item.activities.length}}" class="card empty"><view class="muted">当天暂无公开安排。</view></view>
+    </view>
+  </block>
+</view>

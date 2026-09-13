@@ -1,0 +1,56 @@
+<view class="screen">
+  <view class="back" bindtap="backToTrips"><image class="back-icon" src="/assets/icons/chevron-left.svg" mode="aspectFit" aria-hidden="true" />全部行程</view>
+  <view wx:if="{{error}}" class="error">{{error}}</view>
+  <block wx:if="{{selected}}">
+    <view class="page-header">
+      <view class="heading">{{selected.title}}</view>
+      <view class="subheading">{{selected.startDate}} — {{selected.endDate}}</view>
+    </view>
+    <view class="notice">
+      <view>本机演示 · 当前设备持久化；真实跨设备同步与分享需另行配置云环境</view>
+      <view>最后本地保存：{{selected.lastLocalSave}}</view>
+    </view>
+
+    <view class="metrics">
+      <view class="metric"><view class="metric-value">{{selected.days.length}}</view><view class="muted">天数</view></view>
+      <view class="metric"><view class="metric-value">{{selected.participantCount}}</view><view class="muted">同行人</view></view>
+      <view class="metric"><view class="metric-value">{{selected.overview.bookings.purchased}}/{{selected.overview.bookings.total}}</view><view class="muted">已购买</view></view>
+    </view>
+
+    <view class="card">
+      <view class="title">公共预算 ¥ {{selected.overview.budgetLow}}—{{selected.overview.budgetHigh}}</view>
+      <view class="muted">{{selected.overview.unknownBudgetCount}} 项金额待补</view>
+      <view class="muted">已确认净支出 ¥ {{selected.actual}} · 待确认 ¥ {{selected.pending}}</view>
+    </view>
+
+    <view class="section">重要待办</view>
+    <view wx:if="{{!selected.overview.todos.length}}" class="card empty"><view class="muted">目前没有重要待办。</view></view>
+    <view class="todo" wx:for="{{selected.overview.todos}}" wx:key="code">{{item.label}}</view>
+
+    <view class="section">和同行人一起看</view>
+    <button class="primary" bindtap="previewShare">预览同行人视图</button>
+    <button bindtap="prepareCloudShare">创建 7 天只读分享</button>
+    <view wx:if="{{!cloudEnabled}}" class="muted">真实分享尚未接通；不会生成伪链接或声称已同步。</view>
+    <view wx:if="{{cloudShareId}}" class="share">
+      <view class="title">分享授权已创建</view>
+      <view class="muted">有效期至 {{cloudShareExpiresAt}}</view>
+      <button class="primary" open-type="share">转发给同行人</button>
+      <button bindtap="revokeCloudShare">撤销此分享</button>
+    </view>
+    <view wx:if="{{sharePreview}}" class="share">
+      <view class="title">同行人将看到</view>
+      <view>{{sharePreview.title}} · {{sharePreview.startDate}} 至 {{sharePreview.endDate}}</view>
+      <view class="muted">{{sharePreview.participantCount}} 人 · 公共预算 ¥ {{sharePreview.budgetLow}}—{{sharePreview.budgetHigh}}</view>
+      <view class="privacy">{{sharePreview.notice}}</view>
+      <button bindtap="closeShare">关闭预览</button>
+    </view>
+
+    <view class="section">沿途安排</view>
+    <view class="card" wx:for="{{selected.days}}" wx:key="id">
+      <view class="title">{{item.date}}</view>
+      <view class="muted">{{item.startLocation || '起点待补'}} 至 {{item.endLocation || '终点待补'}}</view>
+      <view class="muted">{{item.activities.length}} 项安排</view>
+    </view>
+  </block>
+</view>
+<trip-tabbar wx:if="{{selected}}" trip-id="{{tripId}}" active="overview" />

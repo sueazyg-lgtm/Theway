@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "旅行总览",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "trip-tabbar": "../../components/trip-tabbar/index"
+  }
+}

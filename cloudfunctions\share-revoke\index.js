@@ -1,0 +1,2 @@
+const cloud=require('wx-server-sdk');cloud.init({env:cloud.DYNAMIC_CURRENT_ENV});const db=cloud.database()
+exports.main=async(event)=>{const {OPENID}=cloud.getWXContext();if(!OPENID||!event.shareId)throw new Error('access_denied');const found=await db.collection('share_grants').doc(event.shareId).get().catch(()=>null);if(!found||found.data.ownerOpenId!==OPENID)throw new Error('access_denied');await db.collection('share_grants').doc(event.shareId).update({data:{status:'revoked',revokedAt:db.serverDate()}});return {revoked:true}}

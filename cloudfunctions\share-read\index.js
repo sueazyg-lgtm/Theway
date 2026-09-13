@@ -1,0 +1,2 @@
+const cloud=require('wx-server-sdk');cloud.init({env:cloud.DYNAMIC_CURRENT_ENV});const db=cloud.database()
+exports.main=async(event)=>{if(!event.shareId)throw new Error('share_not_found');const result=await db.collection('share_grants').doc(event.shareId).get().catch(()=>null);const grant=result&&result.data;if(!grant)throw new Error('share_not_found');if(grant.status!=='active')throw new Error('share_revoked');if(new Date(grant.expiresAt).getTime()<=Date.now())throw new Error('share_expired');return {publicView:grant.publicView}}

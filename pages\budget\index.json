@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "预算",
+  "usingComponents": {
+    "trip-tabbar": "../../components/trip-tabbar/index"
+  }
+}

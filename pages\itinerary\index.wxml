@@ -1,0 +1,53 @@
+<view class="screen">
+  <view class="back" bindtap="backToTrips"><image class="back-icon" src="/assets/icons/chevron-left.svg" mode="aspectFit" aria-hidden="true" />全部行程</view>
+  <view wx:if="{{error}}" class="error">{{error}}</view>
+  <block wx:if="{{selected}}">
+    <view class="page-header">
+      <view class="heading">行程</view>
+      <view class="subheading">把每天的路和停留慢慢排好，上下移动就能调整顺序。</view>
+    </view>
+    <view class="notice">地图与路线自动估算未配置，地点、时长和出发时间均可手动录入。</view>
+
+    <view class="section">每日路线</view>
+    <view class="card">
+      <text>日期</text>
+      <picker range="{{selected.days}}" range-key="date" value="{{routeDayIndex}}" bindchange="selectRouteDay"><view class="input">{{selected.days[routeDayIndex].date}}</view></picker>
+      <text>当天起点</text>
+      <input placeholder="例如：机场" value="{{startLocation}}" data-field="startLocation" bindinput="field" />
+      <text>当天终点</text>
+      <input placeholder="例如：海边民宿" value="{{endLocation}}" data-field="endLocation" bindinput="field" />
+      <button class="primary" bindtap="saveDayLocations">保存每日路线</button>
+    </view>
+
+    <view class="section">添加每日安排</view>
+    <view class="card">
+      <text>日期</text>
+      <picker range="{{selected.days}}" range-key="date" value="{{dayIndex}}" data-field="dayIndex" bindchange="field"><view class="input">{{selected.days[dayIndex].date}}</view></picker>
+      <text>类型</text>
+      <picker range="{{activityTypes}}" value="{{typeIndex}}" data-field="typeIndex" bindchange="field"><view class="input">{{activityTypes[typeIndex]}}</view></picker>
+      <text>名称</text>
+      <input placeholder="例如：博物馆或酒店" value="{{activityName}}" data-field="activityName" bindinput="field" />
+      <text>时长（分钟，可留空）</text>
+      <input type="number" placeholder="例如：90" value="{{activityDuration}}" data-field="activityDuration" bindinput="field" />
+      <button class="primary" bindtap="addActivity">保存安排</button>
+    </view>
+
+    <view class="section">每日时间线</view>
+    <view class="day" wx:for="{{selected.days}}" wx:key="id" wx:for-item="day">
+      <view class="day-head">
+        <view class="day-date">{{day.date}}</view>
+        <picker mode="time" value="{{day.departureTime}}" data-day="{{day.id}}" bindchange="setDeparture"><view class="time">{{day.departureTime || '设置出发时间'}}</view></picker>
+      </view>
+      <view wx:if="{{!day.activities.length}}" class="card empty"><view class="muted">当天暂无安排，从上方添加第一项。</view></view>
+      <view class="card activity {{item.status === 'cancelled' ? 'cancelled' : ''}}" wx:for="{{day.activities}}" wx:key="id">
+        <view class="title">{{item.timeLabel}} · {{item.name}}</view>
+        <view class="muted">{{item.typeLabel}} · {{item.durationLabel}} · {{item.statusLabel}}</view>
+        <view class="row">
+          <button size="mini" data-day="{{day.id}}" data-id="{{item.id}}" data-direction="-1" bindtap="moveActivity">上移</button>
+          <button size="mini" data-day="{{day.id}}" data-id="{{item.id}}" data-direction="1" bindtap="moveActivity">下移</button>
+        </view>
+      </view>
+    </view>
+  </block>
+</view>
+<trip-tabbar wx:if="{{selected}}" trip-id="{{tripId}}" active="itinerary" />

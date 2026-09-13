@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "date": "2026-09-11",
+      "action": "redesign",
+      "scope": [
+        "pages/index",
+        "pages/overview",
+        "pages/itinerary",
+        "pages/budget",
+        "pages/bookings",
+        "pages/adjustments",
+        "pages/share",
+        "components/trip-tabbar"
+      ],
+      "designSystem": "design.md",
+      "runtimeTokens": "styles/tokens.wxss",
+      "portableTokens": "tokens.css",
+      "assetPolicy": "local-svg-only",
+      "logicChanges": false
+    },
+    {
+      "date": "2026-09-11",
+      "action": "refine-after-visual-review",
+      "scope": [
+        "pages/index",
+        "styles/workspace.wxss",
+        "components/trip-tabbar"
+      ],
+      "changes": [
+        "replace-repeated-trip-cards-with-one-grouped-list",
+        "move-create-action-into-page-header",
+        "demote-seed-import-to-secondary-action",
+        "center-button-content-with-flex-layout",
+        "replace-floating-pill-tabbar-with-standard-system-tabbar",
+        "remove-card-shadows"
+      ],
+      "logicChanges": false
+    },
+    {
+      "date": "2026-09-11",
+      "action": "replace-art-direction",
+      "scope": [
+        "global-design-tokens",
+        "pages/index",
+        "all-workspace-headers",
+        "components/trip-tabbar",
+        "local-svg-assets"
+      ],
+      "theme": "warm-ivory-moss-sunset",
+      "illustration": "flat-vector-lake-mountains-pines",
+      "primaryNavigation": "raised-central-budget-action",
+      "logicChanges": false
+    }
+  ]
+}
